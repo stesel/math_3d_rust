@@ -1,3 +1,4 @@
+#[macro_use]
 extern crate math_3d_rust;
 use math_3d_rust::utils::vector_4::Vector4;
 
@@ -7,10 +8,15 @@ mod vector_4 {
 
     #[test]
     fn should_create_vector() {
-        let vector_4: Vector4 = Vector4::new(1.0, 2.0, 3.0, 0.0);
-        assert_eq!(vector_4.x, 1.0);
-        assert_eq!(vector_4.y, 2.0);
-        assert_eq!(vector_4.z, 3.0);
-        assert_eq!(vector_4.w, 0.0);
+        let v = vector!(1.0, 2.0, 3.0);
+        assert_eq!(v.x, 1.0);
+        assert_eq!(v.y, 2.0);
+        assert_eq!(v.z, 3.0);
+    }
+
+    #[test]
+    fn should_negate_vector() {
+        let v = vector!(1.0, -2.0, 3.0);
+        assert_eq!(-v, vector!(-1.0, 2.0, -3.0));
     }
 }
