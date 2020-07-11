@@ -1,3 +1,5 @@
 pub mod utils {
-    pub mod vector_4;
+    pub mod scalar;
+    pub mod vector;
+    pub mod matrix;
 }

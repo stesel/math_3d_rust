@@ -1,14 +1,5 @@
 use std::ops::{Neg, Add, Sub, Mul, Div};
-
-pub trait RoundTo<T> {
-    fn round_to(&self, digits_after_comma: u8) -> T;
-}
-
-impl RoundTo<f32> for f32 {
-    fn round_to(&self, digits_after_comma: u8) -> Self {
-        (self * digits_after_comma as f32).round() / digits_after_comma as f32
-    }
-}
+use crate::utils::scalar::RoundTo;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vector4 {
@@ -22,23 +13,57 @@ impl Vector4 {
     pub fn new(x: f32, y: f32, z: f32, w: f32) -> Self {
         Vector4 {x, y, z, w}
     }
-}
 
-pub fn magnitude(v: Vector4) -> f32 {
-    (v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w).sqrt()
-}
+    pub fn magnitude(v: Self) -> f32 {
+        (v.x * v.x + v.y * v.y + v.z * v.z + v.w * v.w).sqrt()
+    }
 
-pub fn normalize(v: Vector4) -> Vector4 {
-    v / magnitude(v)
-}
+    pub fn normalize(v: Self) -> Self {
+        v / Self::magnitude(v)
+    }
 
-pub fn round_to(v: Vector4, digits_after_comma: u8) -> Vector4 {
-    Vector4::new(
-        v.x.round_to(digits_after_comma),
-        v.y.round_to(digits_after_comma),
-        v.z.round_to(digits_after_comma),
-        v.w.round_to(digits_after_comma),
-    )
+    pub fn round_to(v: Self, digits_after_comma: u8) -> Self {
+        Self::new(
+            v.x.round_to(digits_after_comma),
+            v.y.round_to(digits_after_comma),
+            v.z.round_to(digits_after_comma),
+            v.w.round_to(digits_after_comma)
+        )
+    }
+
+    pub fn dot(a: Self, b: Self) -> f32 {
+        a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w
+    }
+
+    pub fn cross(a: Self, b: Self) -> Self {
+        Self::new(
+            a.y * b.z - a.z * b.y,
+            a.z * b.x - a.x * b.z,
+            a.x * b.y - a.y * b.x,
+            0.0
+        )
+    }
+
+    pub fn get(&self, index: usize) -> f32 {
+        match index {
+            0 => self.x,
+            1 => self.y,
+            2 => self.z,
+            3 => self.w,
+            _ => { panic!("Attempt to get unacceptable index") }
+        }
+    }
+
+    pub fn set(&mut self, index: usize, value: f32) -> &Self {
+        match index {
+            0 => self.x = value,
+            1 => self.y = value,
+            2 => self.z = value,
+            3 => self.w = value,
+            _ => { panic!("Attempt to set unacceptable index") }
+        }
+        self
+    }
 }
 
 impl PartialEq for Vector4 {
@@ -96,7 +121,7 @@ impl Div<f32> for Vector4 {
 }
 
 #[macro_export]
-macro_rules! vector4 {
+macro_rules! vector {
     ($x: expr, $y: expr, $z: expr) => (
         Vector4::new($x, $y, $z, 0.0)
     );
