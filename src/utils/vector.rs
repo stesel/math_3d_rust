@@ -1,7 +1,7 @@
 use std::ops::{Neg, Add, Sub, Mul, Div};
 use crate::utils::scalar::RoundTo;
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone)]
 pub struct Vector4 {
     pub x: f32,
     pub y: f32,
@@ -19,7 +19,7 @@ impl Vector4 {
     }
 
     pub fn normalize(v: Self) -> Self {
-        v / Self::magnitude(v)
+        v.clone() / Self::magnitude(v)
     }
 
     pub fn round_to(v: Self, digits_after_comma: u8) -> Self {

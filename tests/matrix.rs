@@ -68,7 +68,7 @@ mod matrix {
     fn should_multiply_identity_matrix_by_vector() {
         let m = identity_matrix!(4, 4);
         let v = vector!(1.0, 2.0, 3.0, 4.0);
-        assert_eq!(m * v, v);
+        assert_eq!(m * v.clone(), v);
     }
 
     #[test]
