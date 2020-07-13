@@ -52,8 +52,7 @@ impl Matrix {
                 current_column = 0;
             }
         }
-        return out;
-
+        out
     }
 
     pub fn minor(m: Self, row: usize, column: usize) -> f32 {
@@ -89,7 +88,7 @@ impl Matrix {
                 out.set(column, row, Self::cofactor(m.clone(), row, column) / det);
             }
         }
-        return out;
+        out
     }
 
     pub fn round_to(m: Self, digits_after_comma: u8) -> Self {
